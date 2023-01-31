@@ -1,31 +1,37 @@
 pipeline {
     agent any
+
     tools {
-        maven 'Maven3.8.6'
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "Mven3.8"
     }
+
     stages {
         stage('checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/keyspaceits/javawebapp.git']]])
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/keyspaceits/javawebapp.git']])
             }
         }
-        stage('build'){
-            steps{
+        stage('build') {
+            steps {
                 sh 'mvn clean install -f pom.xml'
             }
-        }
-        stage('CodeQulity'){
-            steps {
-            withSonarQubeEnv('SonarQube'){
-            sh 'mvn clean install -f pom.xml sonar:sonar' 
-              }
-            }
-        }
-        stage('deploy'){
-            steps{
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-deployer', path: '', url: 'http://192.168.1.200:8080')], contextPath: null, war: '**/*.war'
-            }
-        }
         
+        }
+        stage('build-notify') {
+            steps {
+                slackSend message: 'Build was successful', tokenCredentialId: 'slack'
+            }
+        }
+        stage('Prod Deploy') {
+            steps {
+                deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://192.168.1.200:8080')], contextPath: null, war: '**/*.war'
+            }
+        }
+        stage('Deploy-notify') {
+            steps {
+                slackSend message: 'Deployment was successful', tokenCredentialId: 'slack'
+            }
+        }
     }
 }
