@@ -20,17 +20,17 @@ pipeline {
         }
         stage('build-notify') {
             steps {
-                slackSend message: 'Build was successful', tokenCredentialId: 'slack'
+                slackSend channel: 'opsteam', message: 'build success', teamDomain: 'creativeworks', tokenCredentialId: 'slack'
             }
         }
         stage('Prod Deploy') {
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://192.168.1.200:8080')], contextPath: null, war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://34.234.40.136:8080')], contextPath: null, war: '**/*.war'
             }
         }
         stage('Deploy-notify') {
             steps {
-                slackSend message: 'Deployment was successful', tokenCredentialId: 'slack'
+                slackSend channel: 'opsteam', message: 'Deployment Success', teamDomain: 'creativeworks', tokenCredentialId: 'slack'
             }
         }
     }
