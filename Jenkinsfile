@@ -20,7 +20,7 @@ pipeline {
         }
         stage('build-notify') {
             steps {
-                slackSend channel: 'opsteam', message: 'build success', teamDomain: 'creativeworks', tokenCredentialId: 'slack'
+                slackSend channel: 'opsteam', message: 'build success', teamDomain: 'creativeworks-corp', tokenCredentialId: 'slack'
             }
         }
         stage('Prod Deploy') {
@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Deploy-notify') {
             steps {
-                slackSend channel: 'opsteam', message: 'Deployment Success', teamDomain: 'creativeworks', tokenCredentialId: 'slack'
+                slackSend channel: 'opsteam', message: 'Deployment Success', teamDomain: 'creativeworks-corp', tokenCredentialId: 'slack'
             }
         }
     }
