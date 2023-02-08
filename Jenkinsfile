@@ -23,6 +23,13 @@ pipeline {
                 slackSend channel: 'opsteam', message: 'build success', teamDomain: 'creativeworks-corp', tokenCredentialId: 'slack'
             }
         }
+        stage('CodeQuality') {
+            steps {
+            withSonarQubeEnv(credentialsId: 'SonarQube') {
+            sh 'mvn clean install -f pom.xml sonar:sonar'
+            }
+            }
+        }
         stage('Prod Deploy') {
             steps {
                 deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://34.234.40.136:8080')], contextPath: null, war: '**/*.war'
