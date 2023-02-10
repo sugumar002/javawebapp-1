@@ -30,6 +30,11 @@ pipeline {
             }
             }
         }
+        stage('Nexus Upload'){
+            steps {
+            nexusArtifactUploader artifacts: [[artifactId: 'CounterWebApp', classifier: '', file: '/var/lib/jenkins/workspace/test-sonar/target/CounterWebApp.war', type: 'WAR']], credentialsId: 'nexus', groupId: 'com.mkyong', nexusUrl: '52.3.36.8:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '1.0-SNAPSHOT'
+            }
+        }
         stage('Prod Deploy') {
             steps {
                 deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://34.234.40.136:8080')], contextPath: null, war: '**/*.war'
