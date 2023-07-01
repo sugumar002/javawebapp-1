@@ -29,6 +29,11 @@ pipeline {
                 slackSend channel: 'projectk', message: 'App Build Successful', teamDomain: 'projectkspacegroup', tokenCredentialId: 'slack'
             }
         }
+        stage ('CodeQulity') {
+            withSonarQubeEnv('sonarqube') {
+                 sh 'mvn clean install -f pom.xml sonar:sonar' 
+                }
+            }
         stage('deploy to prod'){
                 steps{
                    deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://54.242.100.220:8080/')], contextPath: null, war: '**/*.war' 
