@@ -38,7 +38,7 @@ pipeline {
         }
         stage('nexusupload'){
             steps{
-                nexusArtifactUploader artifacts: [[artifactId: 'CounterWebApp', classifier: '', file: '/var/lib/jenkins/workspace/nexus-upload/target/CounterWebApp.war', type: '.WAR']], credentialsId: 'nexus', groupId: 'com.mkyong', nexusUrl: 'ec2-54-208-106-241.compute-1.amazonaws.com:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '1.0-SNAPSHOT'
+                nexusArtifactUploader artifacts: [[artifactId: 'CounterWebApp', classifier: '', file: '/var/lib/jenkins/workspace/project-k-space/target/CounterWebApp.war', type: '.WAR']], credentialsId: 'nexus', groupId: 'com.mkyong', nexusUrl: 'ec2-54-208-106-241.compute-1.amazonaws.com:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '1.0-SNAPSHOT'
             }
             
         }
