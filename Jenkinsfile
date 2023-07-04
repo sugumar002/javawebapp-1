@@ -36,6 +36,12 @@ pipeline {
                 }
             }
         }
+        stage('nexusupload'){
+            steps{
+                nexusArtifactUploader artifacts: [[artifactId: 'CounterWebApp', classifier: '', file: '/var/lib/jenkins/workspace/nexus-upload/target/CounterWebApp.war', type: 'WAR']], credentialsId: 'nexus', groupId: 'com.mkyong', nexusUrl: 'ec2-54-208-106-241.compute-1.amazonaws.com:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-shapshots', version: '1.0-SNAPSHOT'
+            }
+            
+        }
         stage('deploy to prod'){
                 steps{
                    deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://52.2.244.186:8080/')], contextPath: null, war: '**/*.war' 
