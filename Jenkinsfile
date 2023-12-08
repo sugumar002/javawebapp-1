@@ -37,7 +37,13 @@ pipeline {
                
             
         }
-        
+        stage ('CodeQulity') {
+            steps{
+            withSonarQubeEnv('SonarQube') {
+                 sh 'mvn clean install -f pom.xml sonar:sonar' 
+                }
+            }
+        }
         stage('Deploy to Prod') {
             steps {
 
