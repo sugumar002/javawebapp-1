@@ -44,6 +44,13 @@ pipeline {
                 }
             }
         }
+
+      stage ('NexusUpload') {
+        steps {
+            nexusArtifactUploader artifacts: [[artifactId: 'CounterWebApp', classifier: '', file: '/var/lib/jenkins/workspace/my-1st-jenkins-job/target/CounterWebApp.war', type: 'war']], credentialsId: 'NexusCred', groupId: 'com.mkyong', nexusUrl: '52.2.21.21:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '1.0-SNAPSHOT'
+        }
+          
+      }
         stage('Deploy to Prod') {
             steps {
 
@@ -65,5 +72,6 @@ pipeline {
                
             
         }
+
     }
 }
