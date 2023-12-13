@@ -47,7 +47,7 @@ pipeline {
 
       stage ('NexusUpload') {
         steps {
-            nexusArtifactUploader artifacts: [[artifactId: 'CounterWebApp', classifier: '', file: '/var/lib/jenkins/workspace/javawebapp-declarative-pipeline/target/CounterWebApp.war', type: 'war']], credentialsId: 'NexusCred', groupId: 'com.mkyong', nexusUrl: '52.2.21.21:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '1.0-SNAPSHOT'
+            nexusArtifactUploader artifacts: [[artifactId: 'CounterWebApp', classifier: '', file: '/home/jenkins/workspace/javawebapp-declarative-pipeline/target/CounterWebApp.war', type: 'war']], credentialsId: 'NexusCred', groupId: 'com.mkyong', nexusUrl: '52.2.21.21:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-snapshots', version: '1.0-SNAPSHOT'
         }
           
       }
