@@ -1,6 +1,18 @@
 pipeline {
     agent any
-
+environment {
+    NEXUS_URL = 'http://52.2.21.21:8081'
+	REPOSITORY = 'maven-snapshots'
+	GROUP_ID = 'com.mkyong'
+	ARTIFACT_ID = 'CounterWebApp'
+	PACKAGING = 'war'
+	USERNAME = 'admin'
+	PASSWORD = 'Nexus123#'
+	TOMCAT_URL = 'http://34.226.163.28:8080'
+	TOMCAT_MANAGER_USER = 'deployer'
+	TOMCAT_MANAGER_PASSWORD = 'Poiuytrewq321#'
+	TOMCAT_CONTEXT_PATH = '/CounterWebApp'
+}
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
         maven "Maven3.9.5"
@@ -72,6 +84,16 @@ pipeline {
                
             
         }
+       stage('Fetch latest Artifact from Nexus') {
+    steps {
+	script {
+	  def lastet_version= sh(script: "curl -u ${USERNAME}:${PASSWORD} -s ${NEXUS_URL}/service/rest/v1/search/assets?repository=${REPOSITORY}&group=${GROUP_ID}&name=${ARTIFACT_ID}&sort=version&maven.extension=${PACKAGING} | jq -r '.items[0].version'", returnStdout: true).trim()
+	  
+	  sh "curl -u ${USERNAME}:${PASSWORD} -O ${NEXUS_URL}/repository/${REPOSITORY}/${GROUP_ID}/${ARTIFACT_ID}/{latest_version}/${ARTIFACT_ID}-${latest_version}.${PACKAGING}"
+	  }
+	}  
+  }
+        
 
     }
 }
