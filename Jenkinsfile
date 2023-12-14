@@ -91,7 +91,7 @@ environment {
 	script {
 	  def latest_version = sh(script: "curl -u ${USERNAME}:${PASSWORD} -s ${NEXUS_URL}/service/rest/v1/search/assets?repository=${REPOSITORY}&group=${GROUP_ID}&name=${ARTIFACT_ID}&sort=version&format=maven2 | /usr/bin/jq -r '.items[0].version'", returnStdout: true).trim()
 	  
-	  sh "curl -u ${USERNAME}:${PASSWORD} -O ${NEXUS_URL}/repository/${REPOSITORY}/${GROUP_ID}/${ARTIFACT_ID}/{latest_version}/${ARTIFACT_ID}-${latest_version}.${PACKAGING}"
+	  sh "curl -u ${USERNAME}:${PASSWORD} -O ${NEXUS_URL}/repository/${REPOSITORY}/${GROUP_ID}/${ARTIFACT_ID}/${latest_version}/${ARTIFACT_ID}-${latest_version}.${PACKAGING}"
 	  }
 	}  
   }
