@@ -54,7 +54,7 @@ pipeline {
         stage('Deploy to Prod') {
             steps {
 
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://54.164.45.31:8080/')], contextPath: null, war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://34.226.163.28:8080/')], contextPath: null, war: '**/*.war'
             }
 
             post {
