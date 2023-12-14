@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+	    label 'maven-build-agent'
+    }
 environment {
     NEXUS_URL = 'http://52.2.21.21:8081'
 	REPOSITORY = 'maven-snapshots'
@@ -87,7 +89,7 @@ environment {
        stage('Fetch latest Artifact from Nexus') {
     steps {
 	script {
-	  def lastet_version= sh(script: "curl -u ${USERNAME}:${PASSWORD} -s ${NEXUS_URL}/service/rest/v1/search/assets?repository=${REPOSITORY}&group=${GROUP_ID}&name=${ARTIFACT_ID}&sort=version | /usr/bin/jq -r '.items[0].version'", returnStdout: true).trim()
+	  def lastet_version= sh(script: "curl -u ${USERNAME}:${PASSWORD} -s ${NEXUS_URL}/service/rest/v1/search/assets?repository=${REPOSITORY}&group=${GROUP_ID}&name=${ARTIFACT_ID}&sort=version&maven.extension=${PACKAGING} | /usr/bin/jq -r '.items[0].version'", returnStdout: true).trim()
 	  
 	  sh "curl -u ${USERNAME}:${PASSWORD} -O ${NEXUS_URL}/repository/${REPOSITORY}/${GROUP_ID}/${ARTIFACT_ID}/{latest_version}/${ARTIFACT_ID}-${latest_version}.${PACKAGING}"
 	  }
