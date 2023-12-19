@@ -53,19 +53,7 @@ pipeline {
         }
           
       }
-	stage("Stage deploy") {
-            steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://34.226.163.28:8080')], contextPath: null, war: '**/*.war'
-            }
-        }
-	stage('Dev apprl for Prod') {
-            steps {
-                echo "taking approval from Dev Manager"
-                timeout(time: 7, unit: 'DAYS') {
-                    input message: 'Do you want to proceed to QA?', submitter:'admin'
-                }
-            }
-        }
+	
         stage('Deploy to Prod') {
             steps {
 
