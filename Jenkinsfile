@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage("checkout") {
             steps {
-               checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/keyspaceits/javawebapp.git']]]) 
+               checkout([$class: 'GitSCM', branches: [[name: '*/test']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/keyspaceits/javawebapp.git']]]) 
             }
         }
         stage("build") {
