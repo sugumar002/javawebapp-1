@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools{
-        maven 'Maven3.8.2'
+        maven 'Maven3.9.5'
     }
     stages {
         stage("checkout") {
@@ -23,7 +23,7 @@ pipeline {
         }
         stage("dev deploy") {
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'deployer', path: '', url: 'http://54.164.159.39:8080')], contextPath: null, war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://34.226.163.28:8080')], contextPath: null, war: '**/*.war'
             }
         }
 		stage('Dev apprl for QA') {
@@ -36,7 +36,7 @@ pipeline {
         }
         stage('QA Deploy'){
             steps{
-                deploy adapters: [tomcat9(credentialsId: 'deployer', path: '', url: 'http://54.164.159.39:8080')], contextPath: null, war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://34.226.163.28:8080')], contextPath: null, war: '**/*.war'
             }
         }
         
