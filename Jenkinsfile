@@ -9,7 +9,7 @@ pipeline {
     stages {
 	    stage('checkout'){
 		 steps{
-		 git 'https://github.com/keyspaceits/javawebapp.git'
+		 checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/keyspaceits/javawebapp.git']])
 		 }
 		}
 		
