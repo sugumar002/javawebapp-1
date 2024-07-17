@@ -1,44 +1,28 @@
 pipeline {
     agent any
-    tools{
-        maven 'Maven3.9.5'
+
+    tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "Maven3.9.8"
     }
+
     stages {
-        stage("checkout") {
+	    stage('checkout'){
+		 steps{
+		 checkout scmGit(branches: [[name: '*/test']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/keyspaceits/javawebapp.git']])
+		 }
+		}
+		
+        stage('Build') {
             steps {
-               checkout([$class: 'GitSCM', branches: [[name: '*/test']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/keyspaceits/javawebapp.git']]]) 
+                // Run Maven on a Unix agent.
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
         }
-        stage("build") {
-            steps {
-                sh 'mvn clean install -f pom.xml'
-            }
-        }
-        stage("CodeQuality") {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                sh 'mvn sonar:sonar -f pom.xml'
+           stage('deploy to prod') {
+                steps {
+                   deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://172.31.91.56:8080/')], contextPath: null, war: '**/*.war'
                 }
-            }
         }
-        stage("dev deploy") {
-            steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://34.226.163.28:8080/')], contextPath: null, war: '**/*.war'
-            }
-        }
-		stage('Dev apprl for QA') {
-            steps {
-                echo "taking approval from Dev Manager"
-                timeout(time: 7, unit: 'DAYS') {
-                    input message: 'Do you want to proceed to QA?', submitter:'admin'
-                }
-            }
-        }
-        stage('QA Deploy'){
-            steps{
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-server', path: '', url: 'http://34.226.163.28:8080/')], contextPath: null, war: '**/*.war'
-            }
-        }
-        
     }
 }
