@@ -42,6 +42,6 @@ jobs:
 
             sudo docker stop myjavaapp || true
 
-            docker rm myjavaapp || true
+            sudo docker rm myjavaapp || true
 
-            docker run -d --name myjavaapp -p8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/mydimages:latest
+            sudo docker run -d --name myjavaapp -p8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/mydimages:latest
