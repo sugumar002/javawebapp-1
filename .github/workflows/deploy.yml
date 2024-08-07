@@ -41,8 +41,7 @@ jobs:
 
     - name: Deploy to Tomcat
       run: |
-        curl --upload-file ./deploy/*.war "http://<TOMCAT_SERVER_URL>:<TOMCAT_PORT>/manager/text/deploy?path=/myapp&update=true" \
-          --user "TOMCAT_USER:TOMCAT_PASSWORD"
+        curl --upload-file ./deploy/*.war "http://${{ secrets.TOMCAT_SERVER_URL }}:${{ secrets.TOMCAT_PORT }}/manager/text/deploy?path=/myapp&update=true" --user "${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }}"
       env:
         TOMCAT_SERVER_URL: ${{ secrets.TOMCAT_SERVER_URL }}
         TOMCAT_PORT: ${{ secrets.TOMCAT_PORT }}
